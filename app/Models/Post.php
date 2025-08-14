@@ -11,4 +11,10 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'content', 'author'];
+
+    // 게시글:댓글 = 1:N
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
