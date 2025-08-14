@@ -1,61 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# fastview-pre-employment-assignment
+패스트뷰 라라벨 사전 과제 - 게시판 API 개발
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Name
+fastview-pre-employment-assignment
 
-## About Laravel
+## Description
+이 프로젝트는 Laravel 10 이상과 PHP 8.1+ 환경에서 동작하는 게시판 API를 구현하는 사전 과제입니다.
+CRUD 기본기, 데이터베이스 모델링, API 문서 작성 능력을 확인하는 것이 목적입니다.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+구현 범위:
+- 게시글(Post) CRUD
+- 댓글(Comment) CRUD (Optional)
+- 페이지네이션
+- 요청 데이터 유효성 검사
+- 공통 JSON 응답 포맷 적용
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Badges
+![PHP version](https://img.shields.io/badge/PHP-%3E%3D8.2-brightgreen)
+![Laravel version](https://img.shields.io/badge/Laravel-%3E%3D12.x-red)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Visuals
+게시판 API 처리 흐름 예시:
+```mermaid
+flowchart TD
+    A[Client Request] --> B[Laravel Router]
+    B --> C[Controller]
+    C --> D[Eloquent Model]
+    D --> E[(MySQL Database)]
+    E --> D
+    D --> C
+    C --> F[JSON Response]
+```
 
-## Learning Laravel
+Database ERD:
+```mermaid
+erDiagram
+    POSTS {
+        int id PK
+        string title
+        text content
+        string author
+        datetime created_at
+        datetime updated_at
+    }
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    COMMENTS {
+        int id PK
+        int post_id FK
+        text content
+        datetime created_at
+        datetime updated_at
+    }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    POSTS ||--o{ COMMENTS : hasMany
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+### Requirements
+- PHP 8.2+
+- Docker
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Steps
+```bash
+# 1. 저장소 클론
+git clone https://github.com/jonghyun-cheong/fastview-pre-employment-assignment.git
+cd fastview-pre-employment-assignment
 
-### Premium Partners
+# 2. 의존성 설치
+composer install
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 3. 환경 설정
+cp .env.example .env
+php artisan key:generate
 
-## Contributing
+# 4. 데이터베이스 컨테이너 실행
+php artisan docker:run-mysql
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 5. 데이터베이스 마이그레이션 및 시더 실행
+# ** 데이터베이스 컨테이너 실행 후 MySQL 초기화에 다소 시간이 걸리므로, 명령 오류 발생시 30초 후 다시 시도해 보세요. ** 
+php artisan migrate --seed
 
-## Code of Conduct
+# 6. 서버 실행
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Usage (Postman Collection)
+- baseUrl : http://localhost:8000
+- `postman/collection.json` 에 API 테스트를 위한 Postman Collection 이 포함됩니다.
 
-## Security Vulnerabilities
+### Submission
+- GitHub Repository 에 코드 업로드
+- README.md 에 설치 및 실행 방법 기재
+- Postman Collection (JSON) 포함
+- 제출 기한 : 과제 수령일로부터 24시간 이내, 자정(24:00)까지
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Evaluation Criteria
+- 코드 가독성 구조
+- Eloquant 관계 활용
+- Validation 처리
+- API 문서 완성도
+- Git commit 이력
