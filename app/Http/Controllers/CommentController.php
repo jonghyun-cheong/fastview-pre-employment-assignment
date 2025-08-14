@@ -17,8 +17,8 @@ class CommentController extends Controller
     {
         $perPage = request('per_page', 10);
 
-        $comments = $post->comments
-            ->latset('created_at')
+        $comments = $post->comments()
+            ->latest('created_at')
             ->paginate($perPage);
 
         return response()->json($comments);
