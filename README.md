@@ -48,12 +48,11 @@ erDiagram
         int id PK
         int post_id FK
         text content
-        string author
         datetime created_at
         datetime updated_at
     }
 
-    POSTS ||--o{ COMMENTS : has
+    POSTS ||--o{ COMMENTS : hasMany
 ```
 
 ## Installation
@@ -79,6 +78,7 @@ php artisan key:generate
 php artisan docker:run-mysql
 
 # 5. 데이터베이스 마이그레이션 및 시더 실행
+# ** 데이터베이스 컨테이너 실행 후 MySQL 초기화에 다소 시간이 걸리므로, 명령 오류 발생시 30초 후 다시 시도해 보세요. ** 
 php artisan migrate --seed
 
 # 6. 서버 실행
@@ -86,7 +86,8 @@ php artisan serve
 ```
 
 ### Usage (Postman Collection)
-`postman/collection.json` 에 API 테스트를 위한 Postman Collection 이 포함됩니다.
+- baseUrl : http://localhost:8000
+- `postman/collection.json` 에 API 테스트를 위한 Postman Collection 이 포함됩니다.
 
 ### Submission
 - GitHub Repository 에 코드 업로드
